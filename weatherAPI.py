@@ -16,7 +16,6 @@ BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 def index():
     return render_template('index.html')
 
-    return render_template('index.html')
  
 @app.route('/weather', methods=['GET'])
 def get_weather():
