@@ -33,7 +33,7 @@ def weather():
 
     # Make the API request to OpenWeatherMap
     response = requests.get(url)
-    
+
     # Check if the request was successful
     if response.status_code == 200:
         data = response.json()  # Parse the JSON response from OpenWeatherMap
@@ -45,7 +45,7 @@ def weather():
             "humidity": data["main"]["humidity"],
             "wind_speed": data["wind"]["speed"],
         }
-        # Return the weather data to be displayed on the results page
+        # Render the result page with the weather info
         return render_template('result.html', weather_info=weather_info)
     else:
         return jsonify({"error": "City not found or invalid API key"}), 404
