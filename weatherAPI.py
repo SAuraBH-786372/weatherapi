@@ -23,7 +23,7 @@ def about():
 
 # Weather API route (this will be used by the frontend to fetch weather data)
 @app.route('/weather', methods=['GET'])
-def get_weather():
+def weather():
     city = request.args.get('city')  # Get the city from query parameters
     if not city:
         return jsonify({"error": "City is required"}), 400
