@@ -9,8 +9,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Store your OpenWeather API key here or use an environment variable
-API_KEY = os.getenv('API_KEY')  # Replace with your actual API key
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
+API_KEY = os.getenv('API_KEY')
+if not API_KEY:
+    raise ValueError("API_KEY is not set in environment variables.")
+BASE_URL = "https://api.openweathermap.org/data/2.5/weather?"
 
 # Route to serve the homepage (index.html)
 @app.route('/')
@@ -48,8 +50,12 @@ def weather():
         }
         # Render the result page with the weather info
         return render_template('result.html', weather_info=weather_info)
+    elif response.status_code == 401:
+        return jsonify({"error": "Invalid API key"}), 401
+    elif response.status_code == 404:
+        return jsonify({"error": "City not found"}), 404
     else:
-        return jsonify({"error": "City not found or invalid API key"}), 404
+        return jsonify({"error": "Something went wrong with the weather API"}), 500
 
 # Run the app (This is for local testing only, when deploying you may not need this)
 if __name__ == '__main__':
