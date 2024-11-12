@@ -49,7 +49,7 @@ def weather():
             "wind_speed": data["wind"]["speed"],
         }
         # Render the result page with the weather info
-        return render_template('result.html', weather_info=weather_info)
+        jsonify(weather_info)
     elif response.status_code == 401:
         return jsonify({"error": "Invalid API key"}), 401
     elif response.status_code == 404:
