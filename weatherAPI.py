@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import requests
 import os
@@ -8,7 +8,8 @@ app = Flask(__name__)
 # Enable CORS for all routes
 CORS(app)
 
-API_KEY = os.getenv('API_KEY')   # Replace with your actual API key
+# Store your OpenWeather API key here or use an environment variable
+API_KEY = os.getenv('API_KEY', 'your_openweather_api_key')  # Replace with your actual API key
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 # Route to serve the homepage (index.html)
@@ -49,39 +50,6 @@ def weather():
         return render_template('result.html', weather_info=weather_info)
     else:
         return jsonify({"error": "City not found or invalid API key"}), 404
-
-# Route to display the result page with weather information
-@app.route('/result', methods=['GET'])
-def result():
-    # Fetch city from the URL parameters
-    city = request.args.get('city')
-    if not city:
-        return render_template('error.html', message="City is required")
-
-    # Call the /weather API route to get weather data
-    weather_info = get_weather_data(city)
-    if weather_info.get("error"):
-        return render_template('error.html', message=weather_info["error"])
-
-    # Pass the weather data to the result page template
-    return render_template('result.html', weather_info=weather_info)
-
-def get_weather_data(city):
-    """ Helper function to fetch weather data from OpenWeatherMap """
-    url = f"{BASE_URL}q={city}&appid={API_KEY}&units=metric"
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        data = response.json()
-        return {
-            "city": data["name"],
-            "temperature": data["main"]["temp"],
-            "description": data["weather"][0]["description"],
-            "humidity": data["main"]["humidity"],
-            "wind_speed": data["wind"]["speed"],
-        }
-    else:
-        return {"error": "City not found or invalid API key"}
 
 # Run the app (This is for local testing only, when deploying you may not need this)
 if __name__ == '__main__':
