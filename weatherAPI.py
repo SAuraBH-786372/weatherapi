@@ -45,9 +45,43 @@ def weather():
             "humidity": data["main"]["humidity"],
             "wind_speed": data["wind"]["speed"],
         }
-        return jsonify(weather_info)  # Return JSON response
+        # Return the weather data to be displayed on the results page
+        return render_template('result.html', weather_info=weather_info)
     else:
         return jsonify({"error": "City not found or invalid API key"}), 404
+
+# Route to display the result page with weather information
+@app.route('/result', methods=['GET'])
+def result():
+    # Fetch city from the URL parameters
+    city = request.args.get('city')
+    if not city:
+        return render_template('error.html', message="City is required")
+
+    # Call the /weather API route to get weather data
+    weather_info = get_weather_data(city)
+    if weather_info.get("error"):
+        return render_template('error.html', message=weather_info["error"])
+
+    # Pass the weather data to the result page template
+    return render_template('result.html', weather_info=weather_info)
+
+def get_weather_data(city):
+    """ Helper function to fetch weather data from OpenWeatherMap """
+    url = f"{BASE_URL}q={city}&appid={API_KEY}&units=metric"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "city": data["name"],
+            "temperature": data["main"]["temp"],
+            "description": data["weather"][0]["description"],
+            "humidity": data["main"]["humidity"],
+            "wind_speed": data["wind"]["speed"],
+        }
+    else:
+        return {"error": "City not found or invalid API key"}
 
 # Run the app (This is for local testing only, when deploying you may not need this)
 if __name__ == '__main__':
