@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Store your OpenWeather API key here or use an environment variable
-API_KEY = os.getenv('API_KEY', 'your_openweather_api_key')  # Replace with your actual API key
+API_KEY = os.getenv('API_KEY')  # Replace with your actual API key
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 
 # Route to serve the homepage (index.html)
