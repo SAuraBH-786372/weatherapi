@@ -108,8 +108,7 @@
 
     // Fetch weather data using city from URL
     if (city) {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=YOUR_API_KEY&units=metric`)
-
+        fetch(`http://127.0.0.1:5000/weather?city=${city}`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
