@@ -108,7 +108,7 @@
 
     // Fetch weather data using city from URL
     if (city) {
-        fetch(`http://127.0.0.1:5000/weather?city=${city}`)
+        fetch(`https://weatherapi-go30.onrender.com/`)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
