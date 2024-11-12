@@ -15,6 +15,8 @@ BASE_URL = "http://api.openweathermap.org/data/2.5/weather?"
 @app.route('/')
 def index():
     return render_template('index.html')
+
+    return render_template('index.html')
  
 @app.route('/weather', methods=['GET'])
 def get_weather():
@@ -43,6 +45,6 @@ def get_weather():
     else:
         return jsonify({"error": "City not found or invalid API key"}), 404
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
  
     
