@@ -251,11 +251,10 @@
 <h1>Weather Forecast</h1>
 
 <!-- Form to Get City Input -->
-<form id="weatherForm" action="/result" method="get">
+<form id="weatherForm" onsubmit="getWeather(event)">
     <input type="text" id="city" name="city" placeholder="Enter city name" required>
     <button type="submit">Get Weather</button>
 </form>
-
 
 <!-- Weather result will be displayed here -->
 <div id="weatherResult"></div>
